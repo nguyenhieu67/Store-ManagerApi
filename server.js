@@ -27,7 +27,7 @@ const productSchema = new mongoose.Schema({
 const Product = mongoose.model("Product", productSchema);
 
 // 3. API Lấy danh sách (READ)
-app.get("/testproducts", async (req, res) => {
+app.get("/testProducts", async (req, res) => {
     try {
         const products = await Product.find(); // Tìm tất cả sản phẩm trong DB
         res.json(products);
@@ -37,7 +37,7 @@ app.get("/testproducts", async (req, res) => {
 });
 
 // 4. API Thêm sản phẩm (CREATE)
-app.post("/testproducts", async (req, res) => {
+app.post("/testProducts", async (req, res) => {
     try {
         const newProduct = new Product(req.body);
         const savedProduct = await newProduct.save(); // Lưu vào Cloud
@@ -48,7 +48,7 @@ app.post("/testproducts", async (req, res) => {
 });
 
 // 5. API Xóa (DELETE)
-app.delete("/testproducts/:id", async (req, res) => {
+app.delete("/testProducts/:id", async (req, res) => {
     try {
         const result = await Product.findByIdAndDelete(req.params.id);
         if (result) {
