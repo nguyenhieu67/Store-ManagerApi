@@ -13,54 +13,13 @@ mongoose
     .then(() => console.log("TheBad ơi, kết nối MongoDB thành công rồi!"))
     .catch((err) => console.error("Lỗi kết nối:", err));
 
-// 2. Tạo Schema (Bản thiết kế sản phẩm) - Thay thế cho cấu trúc trong file JSON
-const productSchema = new mongoose.Schema({
-    name: { type: String, required: true },
-    price: Number,
-    stock: Number,
-    category: String,
-    brand: String,
-    imageUrl: String,
-    createdAt: { type: Date, default: Date.now },
-});
+// --- KHAI BÁO CÁC ĐƯỜNG LỘ TRÌNH (ROUTES) ---
+const productRoutes = require("./routes/productRoutes");
+const clientRoutes = require("./routes/clientRoutes");
 
-const Product = mongoose.model("Product", productSchema);
-const URL = "product";
-
-// 3. API Lấy danh sách (READ)
-app.get(`/${URL}`, async (req, res) => {
-    try {
-        const products = await Product.find(); // Tìm tất cả sản phẩm trong DB
-        res.json(products);
-    } catch (err) {
-        res.status(500).json({ message: err.message });
-    }
-});
-
-// 4. API Thêm sản phẩm (CREATE)
-app.post(`/${URL}`, async (req, res) => {
-    try {
-        const newProduct = new Product(req.body);
-        const savedProduct = await newProduct.save(); // Lưu vào Cloud
-        res.status(201).json(savedProduct);
-    } catch (err) {
-        res.status(400).json({ message: err.message });
-    }
-});
-
-// 5. API Xóa (DELETE)
-app.delete(`/${URL}/:id`, async (req, res) => {
-    try {
-        const result = await Product.findByIdAndDelete(req.params.id);
-        if (result) {
-            res.json({ message: "Xóa thành công khỏi MongoDB!" });
-        } else {
-            res.status(404).json({ message: "Không tìm thấy sản phẩm" });
-        }
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
+// Sử dụng Routes (Tiền tố /product và /client)
+app.use("/product", productRoutes);
+app.use("/client", clientRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
