@@ -6,6 +6,7 @@ const clientSchema = new mongoose.Schema({
     fullName: { type: String },
     email: { type: String, unique: true },
     phone: String,
+    order: { type: Number, default: 0 },
     rank: String,
     totalSpending: { type: Number, default: 0 },
     createdAt: { type: Date, default: Date.now },
